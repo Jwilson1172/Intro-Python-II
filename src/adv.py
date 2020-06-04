@@ -1,65 +1,15 @@
-from room import Room
-from player import Player
-
-# Declare all the rooms
-
-room = {
-    "outside": Room(0, "Outside Cave Entrance", "North of you, the cave mouth beckons"),
-    "foyer": Room(
-        1,
-        "Foyer",
-        """Dim light filters in from the south. Dusty
-                    passages run north and east.""",
-    ),
-    "overlook": Room(
-        2,
-        "Grand Overlook",
-        """A steep cliff appears before you, falling
-                    into the darkness. Ahead to the north, a light flickers in
-                    the distance, but there is no way across the chasm.""",
-    ),
-    "narrow": Room(
-        3,
-        "Narrow Passage",
-        """The narrow passage bends here from west
-                    to north. The smell of gold permeates the air.""",
-    ),
-    "treasure": Room(
-        4,
-        "Treasure Chamber",
-        """You've found the long-lost treasure
-                    chamber! Sadly, it has already been completely emptied by
-                    earlier adventurers. The only exit is to the south.""",
-    ),
-    "monster": Room(
-        5,
-        "Monster Chamber",
-        "as the player enters this room there is a snarl from the corner of the \
-            room before you have time to react a cursed creture lunges at you\n",
-    ),
-}
-
-
-# Link rooms together
-# look into random assignment of the room map
-
-room["outside"].n_to = room["foyer"]
-room["foyer"].s_to = room["outside"]
-room["foyer"].n_to = room["overlook"]
-room["foyer"].e_to = room["narrow"]
-room["overlook"].s_to = room["foyer"]
-room["narrow"].w_to = room["foyer"]
-room["narrow"].n_to = room["treasure"]
-room["treasure"].s_to = room["narrow"]
-room["monster"].s_to = room["treasure"]
-room["treasure"].n_to = room["monster"]
-
+from player import Player, PlayerBag
+from routes import Route
 
 #
 # Main
 #
+# starting the world map up and getting all of the routes for movement set up.
+world_map = Route()
+room = world_map.room
 
 mainoc = Player(room["outside"], "Generic Playername")
+bag = PlayerBag(20, mainoc)
 
 
 # Write a loop that:
@@ -87,22 +37,25 @@ def print_void():
     return
 
 
+def print_end():
+    print(
+        "\n\n*****************************\n",
+        "\tYOU DIED :(\n",
+        "*****************************\n",
+    )
+    return
+
+
 DBG = True
 while True:
     # I want to make sure that i catch any straggler exceptions
     try:
         # print the current room then ask the user to imput a command
         print_room()
-
+        exit()
         # adding a fail condition to the game
         if mainoc.room.id == 5:
-            print(
-                "\n\n*****************************\n",
-                "\tYOU DIED :(\n",
-                "*****************************\n",
-            )
-            quit()
-
+            print_end()
         # get user input
         user_input = input(
             "please enter the direction that you wouldf like to go [n,s,e,w] or q to quit: "
