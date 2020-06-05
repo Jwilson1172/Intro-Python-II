@@ -10,9 +10,8 @@ class Player:
         self.name = name
         return
 
-    def move(self, direction: str):
-        print("NOT IMPLEMENTED")
-        raise NotImplementedError("please wait unitl the feature is implemented")
+    def printStat(self):
+        pass
 
 
 class PlayerBag:
@@ -22,6 +21,14 @@ class PlayerBag:
         self.inventory = {
             "player_name": self.player.name,
             "time_created": datetime.time(),
-            "size": self.size,
-            
-        }
+            "size": self.size}
+
+    def add(self, item ):
+        if len(self.inventory.keys()) < self.size:
+            self.inventory.values.append()
+
+    def drop(self):
+        pass
+
+    def print_inv(self):
+        pass
